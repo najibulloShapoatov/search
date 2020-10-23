@@ -29,6 +29,20 @@ func main() {
 
 
 	fmt.Println(r1) 
+	fmt.Println(find(s2, s1)) 
 
 
+}
+
+
+func find(target string, text string)int64{
+	if(len(text) < len(target)){
+		return -1;
+	}
+	for i := len(target); i <= len(text); i ++{
+		if(text[i - len(target):i] == target){
+			return int64(i - len(target));
+		}
+	}
+	return -1;
 }

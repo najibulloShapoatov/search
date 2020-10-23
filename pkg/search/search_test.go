@@ -8,15 +8,15 @@ import (
 
 func TestAll_user(t *testing.T) {
 
-	ch := All(context.Background(), "0000 0000 000000", []string{"test.txt",})
+	ch := All(context.Background(), "0000 0000 000000", []string{"test.txt"})
 
 	s, ok := <-ch
 
 	if !ok {
-		t.Errorf(" method SumPaymentsWithProgress ok not closed => %v", ok)
-	} 
+		t.Errorf(" function All error => %v", ok)
+	}
 
-	log.Println("=======>>>>>",s) 
+	log.Println("=======>>>>>", s)
 
 }
 
