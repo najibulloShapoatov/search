@@ -36,9 +36,9 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 			results = append(results, res...)
 			mu.Unlock()
 
-			//if len(results) > 0 && i == len(files)-1{
-			ch <- results
-			//}
+			if len(results) > 0 {
+				ch <- results
+			}
 
 		}(ctx, files[i], i, ch)
 	}
