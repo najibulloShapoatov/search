@@ -8,13 +8,15 @@ import (
 
 func TestAll_user(t *testing.T) {
 
-	res := All(context.Background(), "0000 0000 000000", []string{"test.txt",})
+	ch := All(context.Background(), "0000 0000 000000", []string{"test.txt",})
 
-	if len(res) == 0 {
-		t.Errorf("FindAllMatchTextInFile error   res => %v ", res)
-	}
+	s, ok := <-ch
 
-	log.Println("res => ", res)
+	if !ok {
+		t.Errorf(" method SumPaymentsWithProgress ok not closed => %v", ok)
+	} 
+
+	log.Println("=======>>>>>",s) 
 
 }
 

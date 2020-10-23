@@ -3,7 +3,6 @@ package search
 import (
 	"sync"
 	"context"
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -71,7 +70,7 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 	temp := strings.Split(file, "\n")
 
 	for i, line := range temp {
-		fmt.Println("[", i+1, "]\t", line)
+		//fmt.Println("[", i+1, "]\t", line)
 		if strings.Contains(line, phrase) {
 
 			r := Result{
