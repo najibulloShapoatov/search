@@ -8,7 +8,7 @@ import (
 
 func TestAll_user(t *testing.T) {
 
-	ch := All(context.Background(), "0000 0000 000000", []string{"test.txt",})
+	ch := All(context.Background(), "0000 0000 000001", []string{"test.txt",})
 
 	s, ok := <-ch
 
@@ -20,7 +20,7 @@ func TestAll_user(t *testing.T) {
 
 }
 
-func TestFindPhrase(t *testing.T) {
+/* func TestFindPhrase(t *testing.T) {
 
 	res := FindAllMatchTextInFile("0000 0000 000000", "test.txt")
 
@@ -30,4 +30,4 @@ func TestFindPhrase(t *testing.T) {
 
 	log.Println("res => ", res)
 
-}
+} */
