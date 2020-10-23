@@ -18,24 +18,31 @@ type Result struct {
 //All ...
 func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 	ch := make(chan []Result)
-	//defer close(ch)
 	wg := sync.WaitGroup{}
+
+	mu := sync.Mutex{}
+	var results []Result
 
 	ctx, cancel := context.WithCancel(ctx)
 
 	for i := 0; i < len(files); i++ {
 		wg.Add(1)
 
-		go func(ctx context.Context, filename string, ch chan<- []Result) {
+		go func(ctx context.Context, filename string, i int, ch chan<- []Result) {
 			defer wg.Done()
 			res := FindAllMatchTextInFile(phrase, filename)
 
-			if len(res) > 0 {
-				ch <- res
-			}
+			mu.Lock()
+			results = append(results, res...)
+			mu.Unlock()
 
-		}(ctx, files[i], ch)
+			//if len(results) > 0 && i == len(files)-1{
+			ch <- results
+			//}
+
+		}(ctx, files[i], i, ch)
 	}
+
 	go func() {
 		defer close(ch)
 		wg.Wait()
@@ -88,31 +95,3 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 
 	return res
 }
-/* 
-//GetIndex ...
-func GetIndex(s string, substr string) (n int) {
-
-	st := []string(s)
-	var str []string
-	t := len(st) / len(substr)
-	i := 0
-
-	for i := 0; i <= t; i++ {
-
-		l := i * len(substr)
-		r := (i + 1) * len(substr)
-		if r > len(st) {
-			r = len(st)
-		}
-
-		sr := strings.Join(st[l:r], "")
-		str = append(str, sr)
-	}
-	sr := strings.Join(st[i*len(substr):], "")
-	str = append(str, sr)
-
-	fmt.Println(str)
-	return len(str)
-
-}
- */
