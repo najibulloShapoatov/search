@@ -57,32 +57,30 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 	wg := sync.WaitGroup{}
 	//count := 0
 
-	ctx, cancel := context.WithCancel(ctx)
+	ctxm, cancel := context.WithCancel(ctx)
 
 	for i := 0; i < len(files); i++ {
 		wg.Add(1)
 		go func(ctx context.Context, filename string, i int, ch chan<- Result) {
 			defer wg.Done()
+			data, err := ioutil.ReadFile(filename)
+			if err != nil {
+				log.Println("error not opened file err => ", err)
+			}
 
-			/* select {
-			case <-ctx.Done():
-				log.Println("canceled => ", i)
-			default: */
+			file := string(data)
+
+			if strings.Contains(file, phrase) {
+
 				res := FindAnyMatchTextInFile(phrase, filename)
-				//if (Result{}) != res {
+				if (Result{}) != res {
 					ch <- res
-				//}
-
-				/* } else {
-					count++
-					if count == len(files) {
-						cancel()
-					}
 				}
+			} else {
+				ch <- Result{}
+			}
 
-			} */
-
-		}(ctx, files[i], i, ch)
+		}(ctxm, files[i], i, ch)
 	}
 
 	<-ch
@@ -91,8 +89,6 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 	go func() {
 		defer close(ch)
 		wg.Wait()
-		cancel()
-
 	}()
 	return ch
 }
