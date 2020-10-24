@@ -55,32 +55,36 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 
 	ch := make(chan Result)
 	wg := sync.WaitGroup{}
-	//count := 0
 
-	ctxm, cancel := context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(ctx)
 
 	for i := 0; i < len(files); i++ {
 		wg.Add(1)
 		go func(ctx context.Context, filename string, i int, ch chan<- Result) {
+
 			defer wg.Done()
+
+			if ctx.Err() == context.Canceled {
+				return
+			}
+
 			data, err := ioutil.ReadFile(filename)
 			if err != nil {
 				log.Println("error not opened file err => ", err)
 			}
+			filetext := string(data)
 
-			file := string(data)
-
-			if strings.Contains(file, phrase) {
-
-				res := FindAnyMatchTextInFile(phrase, filename)
+			if strings.Contains(filetext, phrase) {
+				res := FindAnyMatchTextInFile(phrase, filetext)
 				if (Result{}) != res {
 					ch <- res
+					cancel()
 				}
 			} else {
 				ch <- Result{}
 			}
 
-		}(ctxm, files[i], i, ch)
+		}(ctx, files[i], i, ch)
 	}
 
 	<-ch
@@ -125,19 +129,11 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 }
 
 //FindAnyMatchTextInFile ...
-func FindAnyMatchTextInFile(phrase, fileName string) (res Result) {
+func FindAnyMatchTextInFile(phrase, filetext string) (res Result) {
 
 	//ch := make(chan Result)
 
-	data, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		log.Println("error not opened file err => ", err)
-		return res
-	}
-
-	file := string(data)
-
-	temp := strings.Split(file, "\n")
+	temp := strings.Split(filetext, "\n")
 
 	for i, line := range temp {
 		//fmt.Println("[", i+1, "]\t", line)
