@@ -108,7 +108,10 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 	wg.Add(1)
 	go func(ctx context.Context, ch chan<- Result) {
 		defer wg.Done()
-		ch <- result
+		if (Result{}) != result {
+			ch <- result
+		} 
+
 	}(ctx, ch)
 
 	/* <-ch
