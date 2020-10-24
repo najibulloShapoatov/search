@@ -26,7 +26,7 @@ func TestAny_user(t *testing.T) {
 
 	r, ok := <-res
 	if !ok {
-		log.Println("error ok =>", ok)
+		log.Println("error Any ok =>", ok)
 	}
 
 
