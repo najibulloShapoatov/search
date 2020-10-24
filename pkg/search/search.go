@@ -55,6 +55,7 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 
 	ch := make(chan Result)
 	wg := sync.WaitGroup{}
+	//count := 0
 
 	ctx, cancel := context.WithCancel(ctx)
 
@@ -63,16 +64,23 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 		go func(ctx context.Context, filename string, i int, ch chan<- Result) {
 			defer wg.Done()
 
-			 select {
+			/* select {
 			case <-ctx.Done():
 				log.Println("canceled => ", i)
-			default:
+			default: */
 				res := FindAnyMatchTextInFile(phrase, filename)
-				if(Result{}) != res{
+				//if (Result{}) != res {
 					ch <- res
+				//}
+
+				/* } else {
+					count++
+					if count == len(files) {
+						cancel()
+					}
 				}
 
-			} 
+			} */
 
 		}(ctx, files[i], i, ch)
 	}
@@ -145,7 +153,6 @@ func FindAnyMatchTextInFile(phrase, fileName string) (res Result) {
 				LineNum: int64(i + 1),
 				ColNum:  int64(strings.Index(line, phrase)) + 1,
 			}
-			
 
 		}
 	}

@@ -40,8 +40,8 @@ func TestAny_user(t *testing.T) {
 
 
 }
-/* 
-func TestAnyEmpty_user(t *testing.T) {
+
+func TestAny404_user(t *testing.T) {
 
 	res := Any(context.Background(), "HTP", []string{"../../test.txt", "../../test copy.txt"})
 
@@ -60,4 +60,4 @@ func TestAnyEmpty_user(t *testing.T) {
 	log.Println("---------------")
 
 
-} */
+} 
