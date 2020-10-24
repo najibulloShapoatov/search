@@ -1,29 +1,21 @@
-История веб-скрейпинга на самом деле намного длиннее, чем кажется, она начинается со времени, когда появился Интернет.
+The Hypertext Transfer Protocol (HTTP) is an application layer protocol for distributed, collaborative, 
+hypermedia information systems.[1] HTTP is the foundation of data communication for the 
+World Wide Web, where hypertext documents include hyperlinks to other resources 
+that the user can easily access, for example by a mouse click or by tapping the screen in a web browser.
 
-В июне 1993 года был создан первый веб-робот World Wide Web Wanderer, который предназначался только для
- измерения размеров всемирной паутины[5][6].
-В декабре 1993 года появилась первая поисковая система WWW, которая опиралась на работу веб-робота[7] — JumpStation[en]. 
-Она уже могла отслеживать информацию, индексировать её и выполнять поиск по словам[8], ранжируя ссылки.
-В 1994 году была запущена первая полнотекстовая поисковая система WebCrawler[en] [9][10].
-В 2000 году появились первые Web API 0000 0000 000000 и API Crawler[10]. В этом году Salesforce и eBay запустили собственный API, 
-благодаря которому программисты получили доступ к некоторым общедоступным данным.
- С тех пор многие веб-сайты предлагают Web API, 0000 0000 000000 что значительно упростило веб-скрейпинг.
-В 2004 году была запущена библиотека Beautiful Soup[en], предназначенная для Python. Поскольку не все веб-сайты предлагают API, 
-программисты искали новое решение для веб-скрейпинга в таких случаях. Таким решением стала библиотека Beautiful Soup,
- которая определяет структуру сайта, используя синтаксический анализ, что помогает анализировать и получать содержимое 
- HTML-страниц[10]. Beautiful Soup считается самой 0000 0000 000000 сложной и продвинутой библиотекой для веб-скрейпинга[11].
-В 2018 год Интернет представлял собой более чем 1,8 миллиарда веб-сайтов[12]. Именно веб-скрейпинг сделал 
-недавно появившуюся Всемирную сеть доступной для поиска, а затем быстро растущий Интернет стал более удобным и доступным[10].
-Методы
-Веб-скрейпинг — это область с активными разработками, разделяющими амбициозную инициативу развития взаимодействия человека и 
-компьютера, которая требует прорывов в обработке и понимании текста онлайн-страниц искусственным интеллектом. 
-Современные решения для скрейпинга варьируются от специальных, требующих человеческих усилий, до полностью автоматизированных
- систем, которые способны преобразовывать целые веб-сайты в структурированную 0000 0000 000000 информацию в определенном формате.
-  Идеально, когда сайт, данные которого нужно извлечь, предоставляет их через API с разрешенным кросс-доменным доступом[13]. 
-В случае, когда дела не обстоят  таким образом, можно обратиться к другим методам скрейпинга.
+Development of HTTP was initiated by Tim Berners-Lee at CERN in 1989. Development of early HTTP Requests for 
+Comments (RFCs) was a coordinated effort by the Internet Engineering Task Force (IETF) and the 
+World Wide Web Consortium (W3C), with work later moving to the IETF.
 
-«Копипаст» вручную
+HTTP/1.1 was first documented in RFC 2068 in 1997. That specification was obsoleted by RFC 2616 in 1999, which was 
+likewise replaced by the RFC 7230 family of RFCs in 2014.
 
-Иногда даже самая лучшая технология веб-скрейпинга не может заменить ручную работу человека, когда пользователь копирует 
-и вставляет текст. В некоторых случаях это единственное возможное 0000 0000 000000 решение, например, когда веб-сайты устанавливают блокировку 
-от веб-скрейпинга и копирования текста.
+HTTP/2 is a more efficient expression of HTTP's semantics "on the wire", and was published in 2015; it is 
+now supported by virtually all web browsers[2] and major web servers over Transport Layer Security (TLS) 
+using an Application-Layer Protocol Negotiation (ALPN) extension[3] where TLS 1.2 or newer is required.[4][5]
+
+HTTP/3 is the proposed successor to HTTP/2,[6][7] which is already in use on the web (enabled by default in latest macOS), 
+using UDP instead of TCP for the underlying transport protocol. Like HTTP/2, it does not obsolete previous major 
+versions of the protocol. 
+Support for HTTP/3 was added to Cloudflare and Google Chrome in September 2019,[8][9] and can be enabled in the 
+stable versions of Chrome and Firefox

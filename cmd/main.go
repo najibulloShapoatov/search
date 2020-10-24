@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	 res := search.FindAllMatchTextInFile("0000 0000 000000", "test.txt")
+	 res := search.FindAllMatchTextInFile("HTTP", "./test.txt")
 
 	for _, r := range res {
 
@@ -22,7 +22,7 @@ func main() {
 
 	fmt.Println(strings.Index("В случае, когда дела не  обстоят таким образом, можно обратиться к другим методам скрейпинга.", "другим методам скрейпинга."))
  
-	s1:="В случае, когда дела не  обстоят таким образом, можно обратиться к другим методам скрейпинга."
+	s1:=""
 	s2:="другим методам скрейпинга."
 
 	 r1 := strings.Index(s1, s2)

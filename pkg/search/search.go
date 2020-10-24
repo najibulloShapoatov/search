@@ -1,6 +1,7 @@
 package search
 
 import (
+	"log"
 	"context"
 	"io/ioutil"
 	"strings"
@@ -20,8 +21,7 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 	ch := make(chan []Result)
 	wg := sync.WaitGroup{}
 
-	mu := sync.Mutex{}
-	var results []Result
+	//var results []Result
 
 	ctx, cancel := context.WithCancel(ctx)
 
@@ -30,11 +30,12 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 
 		go func(ctx context.Context, filename string, i int, ch chan<- []Result) {
 			defer wg.Done()
+
 			res := FindAllMatchTextInFile(phrase, filename)
 
-			mu.Lock()
-			results = append(results, res...)
-			mu.Unlock()
+			if len(res) > 0 {
+				ch <- res
+			}
 
 		}(ctx, files[i], i, ch)
 	}
@@ -42,9 +43,7 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 	go func() {
 		defer close(ch)
 		wg.Wait()
-		if len(results) > 0 {
-			ch <- results
-		}
+
 	}()
 
 	cancel()
@@ -70,6 +69,7 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
+		log.Println("error not opened file err => ", err )
 		return res
 	}
 
@@ -85,7 +85,7 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 				Phrase:  phrase,
 				Line:    line,
 				LineNum: int64(i + 1),
-				ColNum:  int64(strings.Index(line, phrase)),
+				ColNum:  int64(strings.Index(line, phrase))+1,
 			}
 
 			res = append(res, r)
