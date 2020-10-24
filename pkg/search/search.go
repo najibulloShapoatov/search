@@ -58,7 +58,7 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result {
 
 	//ctx, cancel := context.WithCancel(ctx)
 
-	var result Result
+	result := Result{}
 
 	for i := 0; i < len(files); i++ {
 		//wg.Add(1)
