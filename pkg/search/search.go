@@ -1,9 +1,9 @@
 package search
 
 import (
-	"log"
 	"context"
 	"io/ioutil"
+	"log"
 	"strings"
 	"sync"
 )
@@ -50,26 +50,52 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result {
 	return ch
 }
 
-/* //Any ...
+//Any ...
 func Any(ctx context.Context, phrase string, files []string) <-chan Result {
+
 	ch := make(chan Result)
-	defer close(ch)
+	wg := sync.WaitGroup{}
+
+	//var results []Result
+
+	ctx, cancel := context.WithCancel(ctx)
 
 	for i := 0; i < len(files); i++ {
-		go func(ctx context.Context, ch chan<- Result) {
+		wg.Add(1)
 
-		}(ctx, ch)
+		go func(ctx context.Context, filename string, i int, ch chan<- Result) {
+			defer wg.Done()
+
+			select {
+			case <-ctx.Done():
+				log.Println("canceled => ", i)
+			default:
+				res := FindAnyMatchTextInFile(phrase, filename)
+				if (Result{}) != res {
+					ch <- res
+				}
+			}
+
+		}(ctx, files[i], i, ch)
 	}
 
+	<-ch
+	cancel()
+
+	go func() {
+		defer close(ch)
+		wg.Wait()
+
+	}()
 	return ch
-} */
+}
 
 //FindAllMatchTextInFile ...
 func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
-		log.Println("error not opened file err => ", err )
+		log.Println("error not opened file err => ", err)
 		return res
 	}
 
@@ -85,10 +111,40 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result) {
 				Phrase:  phrase,
 				Line:    line,
 				LineNum: int64(i + 1),
-				ColNum:  int64(strings.Index(line, phrase))+1,
+				ColNum:  int64(strings.Index(line, phrase)) + 1,
 			}
 
 			res = append(res, r)
+		}
+	}
+
+	return res
+}
+
+//FindAnyMatchTextInFile ...
+func FindAnyMatchTextInFile(phrase, fileName string) (res Result) {
+
+	data, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		log.Println("error not opened file err => ", err)
+		return res
+	}
+
+	file := string(data)
+
+	temp := strings.Split(file, "\n")
+
+	for i, line := range temp {
+		//fmt.Println("[", i+1, "]\t", line)
+		if strings.Contains(line, phrase) {
+
+			return Result{
+				Phrase:  phrase,
+				Line:    line,
+				LineNum: int64(i + 1),
+				ColNum:  int64(strings.Index(line, phrase)) + 1,
+			}
+
 		}
 	}
 

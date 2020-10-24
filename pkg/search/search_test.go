@@ -20,14 +20,23 @@ func TestAll_user(t *testing.T) {
 
 }
 
-/* func TestFindPhrase(t *testing.T) {
+func TestAny_user(t *testing.T) {
 
-	res := FindAllMatchTextInFile("0000 0000 000000", "test.txt")
+	res := Any(context.Background(), "HTTP", []string{"./test.txt", "./test copy.txt"})
 
-	if len(res) == 0 {
-		t.Errorf("FindAllMatchTextInFile error   res => %v ", res)
+	r, ok := <-res
+	if !ok {
+		log.Println("error ok =>", ok)
 	}
 
-	log.Println("res => ", res)
 
-} */
+
+	log.Println("---------------")
+	log.Println("res.Phrase) => ", r.Phrase)
+	log.Println("res.Line) => ", r.Line)
+	log.Println("res.LineNum) => ", r.LineNum)
+	log.Println("res.ColNum) => ", r.ColNum)
+	log.Println("---------------")
+
+
+}
